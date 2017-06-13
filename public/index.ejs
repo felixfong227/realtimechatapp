@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <title>ᕕ( ᐛ )ᕗ Real time players ᕕ( ᐛ )ᕗ</title>
+    <style>
+    </style>
+  </head>
+  <body>
+  
+  <div id="app">
+    <h1>ᕕ( ᐛ )ᕗ Who is here ᕕ( ᐛ )ᕗ</h1>
+    <div id="uids"></div>
+  </div>
+
+  <div id="chat">
+    <div id="msgBox">
+      <div class="msg">No Message...</div>
+      <div class="from"></div>
+    </div>
+    <div id="inputBox">
+      <input type="text" name="msg" placeholder="Message...">
+    </div>
+  </div>
+
+  <div id="soundEffect"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <link rel="stylesheet" href="/static/css/index.css">
+  <script src="/static/js/soundeffect.js"></script>
+  <script src="/static/js/clientChat.js"></script>
+  </body>
+</html>
