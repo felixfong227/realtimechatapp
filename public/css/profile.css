@@ -1,0 +1,17 @@
+*{
+    padding: 0em;
+    margin: 0em;
+}
+
+html{
+    background: #FFF;
+}
+
+#app{
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+    width: auto;
+    display: block;
+    padding: 1em;
+    text-align: center;
+    margin: 0 auto;
+}

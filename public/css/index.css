@@ -24,8 +24,9 @@ html{
 }
 
 #msgBox{
-    background: greenyellow;
+    background: rgba(38,38,38, 1);
     padding: 1em;
+    color: #FFF;
 }
 
 #chat{

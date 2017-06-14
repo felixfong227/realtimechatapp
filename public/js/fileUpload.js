@@ -18,12 +18,13 @@ fileInput.addEventListener('change', function(e){
     ajax.onload = function(){
         if(ajax.status === 200 && ajax.readyState === 4){
             var response = JSON.parse(ajax.response);
-            inputBox.value += ':' + response.image.url + ':';
-            e.target.value = null;
-        }else{
-            // Somethign when wrong while trying to upload the file
-            var response = JSON.parse(ajax.response);
-            fileMsg.innerHTML = response.msg;
+            if(response.error === true){
+                var response = JSON.parse(ajax.response);
+                fileMsg.innerHTML = response.msg;    
+            }else{
+                inputBox.value += ':' + response.image.url + ':';
+                e.target.value = null;
+            }
         }
     }
 });

@@ -1,11 +1,14 @@
 module.exports = io => {
-    const users = require('./index').users;
+    const users = {}
     const randomstring = require('randomstring');
     const escapeHtml = require('escape-html');
     io.on('connection', (socket) => {
         // Someone join
         const uid = randomstring.generate(30);
-        users[uid] = true;
+        users[uid] = {
+            id: socket.id
+        };
+
         io.emit('user:new', {
             uid: users,
             yourID: uid,
@@ -20,6 +23,22 @@ module.exports = io => {
 
         // Someone send a message
         socket.on('chat:send', payload => {
+            console.log(`${payload.from}: ${payload.msg} to ${payload.to}`);
+
+            // Check for slash commands
+            if(payload.msg.startsWith('/')){
+                const cmd = payload.msg.split(' ')[0];
+                switch (cmd){
+                    case '/username':
+                        const username = payload.msg.split(' ')[1];
+                        console.log(`${uid} update username to ${username}`);
+                        users[uid]['username'] = username;
+                        io.emit('user:update:username', {
+                            uid: users,
+                        });
+                    break;
+                }
+            }
 
             // Filter out all the user HTML things
             payload.msg = escapeHtml(payload.msg);
@@ -43,10 +62,11 @@ module.exports = io => {
                 });
             }
 
-            socket.emit(`chat:get:${payload.to}`, {
+            io.to(users[payload.to].id).emit(`chat:get`, {
                 msg: payload.msg,
                 from: payload.from,
             });
+            
         });
         
     });
