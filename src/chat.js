@@ -20,6 +20,7 @@ module.exports = io => {
 
         // Someone send a message
         socket.on('chat:send', payload => {
+
             // Filter out all the user HTML things
             payload.msg = escapeHtml(payload.msg);
 
@@ -31,6 +32,17 @@ module.exports = io => {
                     payload.msg = payload.msg.replace(url, `<a href="${url}" target="_blank">${url}</a>`);
                 });
             }
+
+            // Replace image
+            const isImage = /:(.*):/igm;
+
+            if(payload.msg.match(isImage)){
+                const imageSource = payload.msg.match(isImage);
+                imageSource.forEach(src => {
+                    payload.msg = payload.msg.replace(src, `<img src="${src.slice(1, -1)}" class="in-app-tag image">` );
+                });
+            }
+
             socket.emit(`chat:get:${payload.to}`, {
                 msg: payload.msg,
                 from: payload.from,

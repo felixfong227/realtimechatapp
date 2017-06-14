@@ -19,19 +19,20 @@
     </div>
     <div id="inputBox">
       <input type="text" name="msg" placeholder="Message...">
-      <div id="fileUpload">
-        <input type="file" name="file">
+      <div id="fileUploadContainer">
+        <input type="file" name="file" id="fileUpload">
         <progress id="fileProgress" value="0" max="100"></progress>
+        <div id="fileMsg"></div>
       </div>
     </div>
   </div>
 
   <div id="soundEffect"></div>
-
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
   <link rel="stylesheet" href="/static/css/index.css">
   <script src="/static/js/soundeffect.js"></script>
   <script src="/static/js/clientChat.js"></script>
+  <script src="/static/js/fileUpload.js"></script>
   </body>
 </html>
