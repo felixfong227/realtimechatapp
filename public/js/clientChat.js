@@ -9,8 +9,8 @@ var yourID;
 
 inputBox.placeholder = 'Message to (' + msgTo + ')';
 
+
 function renderList(payload){
-    console.log(payload)
     if(!yourIDLock){
         yourID = payload.yourID;
         yourIDLock = true;
@@ -23,7 +23,6 @@ function renderList(payload){
 
     // On get message
     socket.on('chat:get:' + yourID, (payload) => {
-        console.log(payload)
         player.playVideo();
         msgBox.innerHTML = payload.msg;
         msgBoxFrom.innerHTML = 'From: ' + payload.from;
@@ -45,10 +44,10 @@ function startNewChat(id){
     inputBox.placeholder = 'Message to (' + msgTo + ')';
     inputBox.addEventListener('keypress', function(e){
         if(e.keyCode === 13 /* ENTER */ ){
-                var text = this.value;
-                this.value = null;
-                // Send message to the server
-                socket.emit('chat:send', {
+            var text = this.value;
+            this.value = null;
+            // Send message to the server
+            socket.emit('chat:send', {
                 to: msgTo,
                 msg: text,
                 from: yourID,
