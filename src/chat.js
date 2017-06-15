@@ -4,7 +4,7 @@ module.exports = io => {
     const escapeHtml = require('escape-html');
     const request = require('request');
     const cookie = require('cookie');
-    const showdown  = require('showdown')
+    const showdown  = require('showdown');
     io.on('connection', (socket) => {
         // Someone join
         const uid = randomstring.generate(30);
@@ -30,6 +30,7 @@ module.exports = io => {
         socket.on('chat:send', payload => {
             console.log(`${payload.from}: ${payload.msg} to ${payload.to}`);
 
+            const rawInput = payload.msg;
 
             const isYouTubeLink = new RegExp(/https:\/\/www.youtube.com\/watch\?v=([^\s]+)/igm);
             const isImage = /:(.*):/igm;
@@ -84,6 +85,7 @@ module.exports = io => {
             io.to(users[payload.to].id).emit(`chat:get`, {
                 msg: payload.msg,
                 from: payload.from,
+                rawText: rawInput,
             });
 
         });

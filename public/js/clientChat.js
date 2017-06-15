@@ -36,7 +36,7 @@ function renderList(payload){
     // On get message
     socket.on('chat:get', (payload) => {
         Push.create('New Message', {
-            body: payload.msg,
+            body: payload.rawText,
             timeout: 4000,
             onClick: function () {
                 window.focus();
