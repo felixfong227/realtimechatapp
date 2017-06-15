@@ -51,3 +51,9 @@ html{
     display: block;
     width: 10em;
 }
+
+.in-app-tag.youtube-embed{
+    display: block;
+    width: 30em;
+    height: 20em;
+}

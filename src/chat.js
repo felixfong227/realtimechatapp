@@ -4,6 +4,7 @@ module.exports = io => {
     const escapeHtml = require('escape-html');
     const request = require('request');
     const cookie = require('cookie');
+    const showdown  = require('showdown')
     io.on('connection', (socket) => {
         // Someone join
         const uid = randomstring.generate(30);
@@ -29,6 +30,11 @@ module.exports = io => {
         socket.on('chat:send', payload => {
             console.log(`${payload.from}: ${payload.msg} to ${payload.to}`);
 
+
+            const isYouTubeLink = new RegExp(/https:\/\/www.youtube.com\/watch\?v=([^\s]+)/igm);
+            const isImage = /:(.*):/igm;
+            const isURL = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/igm;
+
             // Check for slash commands
             // if(payload.msg.startsWith('/')){
             //     const cmd = payload.msg.split(' ')[0];
@@ -47,25 +53,34 @@ module.exports = io => {
             // Filter out all the user HTML things
             payload.msg = escapeHtml(payload.msg);
 
+
             // Make URL to a tag
-            const isURL = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/igm;
-            if(payload.msg.match(isURL)){
+            if(payload.msg.match(isURL) && payload.msg.match(isYouTubeLink) === null){
                 const urls = payload.msg.match(isURL);
                 urls.forEach(url => {
-                    payload.msg = payload.msg.replace(url, `<a href="${url}" target="_blank">${url}</a>`);
+                    // Check for makrdown image
+                    // Cuz markdown image will endwith ) like https://someurl.com/image.png)
+                    if(!url.endsWith(')')){
+                        payload.msg = payload.msg.replace(url, `<a href="${url}" target="_blank">${url}</a>`);
+                    }
                 });
             }
 
-            // Replace image
-            const isImage = /:(.*):/igm;
+            // Makrdown support
+            const markdownConverter = new showdown.Converter();
+            payload.msg = markdownConverter.makeHtml(payload.msg);
 
-            if(payload.msg.match(isImage)){
-                const imageSource = payload.msg.match(isImage);
-                imageSource.forEach(src => {
-                    payload.msg = payload.msg.replace(src, `<img src="${src.slice(1, -1)}" class="in-app-tag image">` );
+            // Replace YouTube link to a YouTube embed object
+            
+            if(payload.msg.match(isYouTubeLink)){
+                const youtubeLinks = payload.msg.match(isYouTubeLink);
+                youtubeLinks.forEach(ytLink => {
+                    const youtubeWathcID = ytLink.split('watch?v=')[1];
+                    payload.msg = payload.msg.replace(ytLink, '');
+                    payload.msg += `<iframe class="in-app-tag youtube-embed" src="https://www.youtube-nocookie.com/embed/${youtubeWathcID}" frameborder="0" allowfullscreen></iframe>`;
                 });
             }
-
+        
             io.to(users[payload.to].id).emit(`chat:get`, {
                 msg: payload.msg,
                 from: payload.from,

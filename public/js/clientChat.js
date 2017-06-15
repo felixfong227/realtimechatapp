@@ -12,6 +12,7 @@ inputBox.placeholder = 'Message to (' + msgTo + ')';
 
 
 function renderList(payload){
+    // Find the total height
     if(!yourIDLock){
         yourID = payload.yourID;
         yourIDLock = true;
@@ -31,6 +32,7 @@ function renderList(payload){
             }
         }
     }
+    var totalHeight = uids.clientHeight;
     // On get message
     socket.on('chat:get', (payload) => {
         Push.create('New Message', {
@@ -65,6 +67,7 @@ socket.on('user:update:username', function(payload){
 
 
 function startNewChat(id){
+    inputBox.focus();
     msgTo = id;
     // Update the DOM
     inputBox.placeholder = 'Message to (' + msgTo + ')';

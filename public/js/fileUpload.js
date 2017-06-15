@@ -22,7 +22,7 @@ fileInput.addEventListener('change', function(e){
                 var response = JSON.parse(ajax.response);
                 fileMsg.innerHTML = response.msg;    
             }else{
-                inputBox.value += ':' + response.image.url + ':';
+                inputBox.value += '![user uploaded content](' + response.image.url + ')';
                 e.target.value = null;
             }
         }
