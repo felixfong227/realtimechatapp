@@ -19,9 +19,10 @@ function renderList(payload){
     uids.innerHTML = null;
     // Check for username
     for(var key in payload.uid){
-        if(typeof payload.uid[key].username !== 'undefined'){
+        if(payload.username){
+            var username = payload.username;
             // User have username
-            uids.innerHTML += '<div class="uid" onclick="startNewChat(this.id)" id="'+key+'">'+ payload.uid[key].username + '('+key+')' +'</div>';
+            uids.innerHTML += '<div class="uid" onclick="startNewChat(this.id)" id="'+key+'">'+ username + '('+key+')' +'</div>';
         }else{
             if(key == yourID){
                 uids.innerHTML += '<div class="uid" onclick="startNewChat(this.id)" id="'+key+'">' + key + '(You)</div>';

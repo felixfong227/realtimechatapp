@@ -2,16 +2,20 @@ module.exports = io => {
     const users = {}
     const randomstring = require('randomstring');
     const escapeHtml = require('escape-html');
+    const request = require('request');
+    const cookie = require('cookie');
     io.on('connection', (socket) => {
         // Someone join
         const uid = randomstring.generate(30);
         users[uid] = {
             id: socket.id
         };
-
+        // Check if the user already contain an username
+        const socketCookie = cookie.parse(socket.handshake.headers.cookie);
         io.emit('user:new', {
             uid: users,
             yourID: uid,
+            username: socketCookie.username || null,
         });
         // Someone leave
         socket.on('disconnect', () => {
@@ -26,19 +30,19 @@ module.exports = io => {
             console.log(`${payload.from}: ${payload.msg} to ${payload.to}`);
 
             // Check for slash commands
-            if(payload.msg.startsWith('/')){
-                const cmd = payload.msg.split(' ')[0];
-                switch (cmd){
-                    case '/username':
-                        const username = payload.msg.split(' ')[1];
-                        console.log(`${uid} update username to ${username}`);
-                        users[uid]['username'] = username;
-                        io.emit('user:update:username', {
-                            uid: users,
-                        });
-                    break;
-                }
-            }
+            // if(payload.msg.startsWith('/')){
+            //     const cmd = payload.msg.split(' ')[0];
+            //     switch (cmd){
+            //         case '/username':
+            //             const username = payload.msg.split(' ')[1];
+            //             console.log(`${uid} update username to ${username}`);
+            //             users[uid]['username'] = username;
+            //             io.emit('user:update:username', {
+            //                 uid: users,
+            //             });
+            //         break;
+            //     }
+            // }
 
             // Filter out all the user HTML things
             payload.msg = escapeHtml(payload.msg);
@@ -66,7 +70,7 @@ module.exports = io => {
                 msg: payload.msg,
                 from: payload.from,
             });
-            
+
         });
         
     });

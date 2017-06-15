@@ -7,6 +7,7 @@ const io = require('socket.io').listen(server);
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const subdomain = require('express-subdomain');
+const cookieParser = require('cookie-parser');
 
 const port = process.env.PORT || 3000;
 
@@ -16,6 +17,7 @@ app.use('/static', express.static(path.join(`${__dirname}/../public`)));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 server.listen(port, () => {
     console.log(`Serer is running on port ${port}`);
