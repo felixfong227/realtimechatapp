@@ -1,3 +1,7 @@
+/*
+describe:
+A SocketIO backend
+*/
 module.exports = io => {
     const users = {}
     const randomstring = require('randomstring');
@@ -5,6 +9,10 @@ module.exports = io => {
     const request = require('request');
     const cookie = require('cookie');
     const showdown  = require('showdown');
+    /*
+    describe:
+    When someone is connected, like open the web app inside a browser
+    */
     io.on('connection', (socket) => {
         // Someone join
         const uid = randomstring.generate(30);
@@ -13,12 +21,20 @@ module.exports = io => {
         };
         // Check if the user already contain an username
         const socketCookie = cookie.parse(socket.handshake.headers.cookie);
+        /*
+        describe:
+        Emit a user:new even to the client with uid, yourID, username
+        */
         io.emit('user:new', {
             uid: users,
             yourID: uid,
             username: socketCookie.username || null,
         });
-        // Someone leave
+
+        /*
+        describe:
+        When someone leave the connection
+        */
         socket.on('disconnect', () => {
             delete users[uid];
             io.emit('user:leave', {
@@ -26,11 +42,19 @@ module.exports = io => {
             });
         });
 
-        // Someone send a message
+        /*
+        describe:
+        Someone send a message
+        */
         socket.on('chat:send', payload => {
             console.log(`${payload.from}: ${payload.msg} to ${payload.to}`);
 
             const rawInput = payload.msg;
+
+            /*
+            describe:
+            Doing some text formated functinos
+            */
 
             const isYouTubeLink = new RegExp(/https:\/\/www.youtube.com\/watch\?v=([^\s]+)/igm);
             const isImage = /:(.*):/igm;
@@ -81,6 +105,11 @@ module.exports = io => {
                     payload.msg += `<iframe class="in-app-tag youtube-embed" src="https://www.youtube-nocookie.com/embed/${youtubeWathcID}" frameborder="0" allowfullscreen></iframe>`;
                 });
             }
+
+            /*
+            describe:
+            Send back the formated text
+            */
         
             io.to(users[payload.to].id).emit(`chat:get`, {
                 msg: payload.msg,

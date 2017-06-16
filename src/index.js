@@ -1,3 +1,7 @@
+/*
+describe:
+Main entry to the backend
+*/
 const express = require('express');
 const app = express();
 const http = require('http');

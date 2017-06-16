@@ -1,3 +1,7 @@
+/*
+describe:
+Someone try to view the uploaded assets
+*/
 const express = require('express');
 const router = express.Router();
 
