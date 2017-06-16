@@ -47,6 +47,10 @@ html{
     font-size: 0.7em;
 }
 
+#msgBox .msg img{
+    width: 20em;
+}
+
 .in-app-tag.image{
     display: block;
     width: 10em;
