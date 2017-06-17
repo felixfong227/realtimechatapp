@@ -51,15 +51,16 @@ module.exports = io => {
 
             const rawInput = payload.msg;
 
+            payload.msg = escapeHtml(payload.msg);
+
             /*
             describe:
             Doing some text formatting functinos
             */
-
-            const isYouTubeLink = new RegExp(/https:\/\/www.youtube.com\/watch\?v=([^\s]+)/igm);
-            const isImage = new RegExp(/:(.*):/igm);
-            const isURL = new RegExp(/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/igm);
-            const isSoundCloud = new RegExp(/https:\/\/soundcloud.com\/(.*) /igm);
+            const youtubeFormatted = require('./formatting/youtube')(payload.msg);
+            const urlFormatted = require('./formatting/url')(youtubeFormatted, youtubeFormatted.isYoutube);
+            payload.msg = urlFormatted.msg;
+            // const isSoundCloud = new RegExp(/https:\/\/soundcloud.com\/(.*) /igm);
 
             // Check for slash commands
             // if(payload.msg.startsWith('/')){
@@ -75,37 +76,10 @@ module.exports = io => {
             //         break;
             //     }
             // }
-
-            // Filter out all the user HTML things
-            payload.msg = escapeHtml(payload.msg);
-
-
-            // Make URL to a tag
-            if(payload.msg.match(isURL) && payload.msg.match(isYouTubeLink) === null){
-                const urls = payload.msg.match(isURL);
-                urls.forEach(url => {
-                    // Check for makrdown image
-                    // Cuz markdown image will endwith ) like https://someurl.com/image.png)
-                    if(!url.endsWith(')')){
-                        payload.msg = payload.msg.replace(url, `<a href="${url}" target="_blank">${url}</a>`);
-                    }
-                });
-            }
-
+            
             // Makrdown support
             const markdownConverter = new showdown.Converter();
             payload.msg = markdownConverter.makeHtml(payload.msg);
-
-            // Replace YouTube link to a YouTube embed object
-            
-            if(payload.msg.match(isYouTubeLink)){
-                const youtubeLinks = payload.msg.match(isYouTubeLink);
-                youtubeLinks.forEach(ytLink => {
-                    const youtubeWathcID = ytLink.split('watch?v=')[1];
-                    payload.msg = payload.msg.replace(ytLink, '');
-                    payload.msg += `<iframe class="in-app-tag youtube-embed" src="https://www.youtube-nocookie.com/embed/${youtubeWathcID}" frameborder="0" allowfullscreen></iframe>`;
-                });
-            }
 
             // Replace new line char to <br>
             payload.msg = payload.msg.replace(/\n/igm, '<br>');
@@ -125,7 +99,7 @@ module.exports = io => {
             describe:
             Send back the formated text
             */
-        
+
             io.to(users[payload.to].id).emit(`chat:get`, {
                 msg: payload.msg,
                 from: payload.from,
