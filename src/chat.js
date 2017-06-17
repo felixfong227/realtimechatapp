@@ -53,12 +53,13 @@ module.exports = io => {
 
             /*
             describe:
-            Doing some text formated functinos
+            Doing some text formatting functinos
             */
 
             const isYouTubeLink = new RegExp(/https:\/\/www.youtube.com\/watch\?v=([^\s]+)/igm);
-            const isImage = /:(.*):/igm;
-            const isURL = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/igm;
+            const isImage = new RegExp(/:(.*):/igm);
+            const isURL = new RegExp(/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/igm);
+            const isSoundCloud = new RegExp(/https:\/\/soundcloud.com\/(.*) /igm);
 
             // Check for slash commands
             // if(payload.msg.startsWith('/')){
@@ -105,6 +106,20 @@ module.exports = io => {
                     payload.msg += `<iframe class="in-app-tag youtube-embed" src="https://www.youtube-nocookie.com/embed/${youtubeWathcID}" frameborder="0" allowfullscreen></iframe>`;
                 });
             }
+
+            // Replace new line char to <br>
+            payload.msg = payload.msg.replace(/\n/igm, '<br>');
+
+            // Replace SoundCloud url to SoundCloud embed
+            // if(payload.msg.match(isSoundCloud)){
+            //     const urls = payload.msg.match(isSoundCloud)
+            //     urls.forEach(url => {
+            //         url = url.split(' ')[0];
+            //         url = url.replace('https://soundcloud.com/', '');
+            //         payload.msg = payload.msg.replace(`https://soundcloud.com/${url}`, '');
+            //         payload.msg = payload += `<ifr/ame class="in-app-tag soundcloud-embed" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/55221233&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>`
+            //     })
+            // }
 
             /*
             describe:

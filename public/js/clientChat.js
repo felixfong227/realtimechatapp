@@ -2,7 +2,7 @@ var socket = io();
 var uids = document.querySelector('#uids');
 var msgBox = document.querySelector('#msgBox .msg');
 var msgBoxFrom = document.querySelector('#msgBox .from');
-var inputBox = document.querySelector('#inputBox input');
+var inputBox = document.querySelector('#inputBox textarea');
 var msgTo = 'No one';
 var yourIDLock = false;
 var yourID;
@@ -52,10 +52,6 @@ function renderList(payload){
         msgBoxFrom.innerHTML = 'From: ' + payload.from;
     });
 
-    socket.on('lol', payload => {
-        console.log(payload);
-    });
-
 }
 
 socket.on('user:new', function(payload){
@@ -75,8 +71,14 @@ function startNewChat(id){
     msgTo = id;
     // Update the DOM
     inputBox.placeholder = 'Message to (' + msgTo + ')';
-    inputBox.addEventListener('keypress', function(e){
+    inputBox.addEventListener('keydown', function(e){
         if(e.keyCode === 13 /* ENTER */ ){
+            e.preventDefault();
+            if(e.shiftKey){
+                // Make a new line
+                this.value += '\n';
+                return false;
+            }
             var text = this.value;
             this.value = null;
             // Send message to the server

@@ -35,8 +35,9 @@ html{
     left: 1em;
 }
 
-#inputBox input{
+#inputBox textarea{
     width: 100vw;
+    height: auto;
     padding: 1em;
     outline: none;
     border: none;
