@@ -59,7 +59,6 @@ module.exports = io => {
             */
             const youtubeFormatted = require('./formatting/youtube')(payload.msg);
             const urlFormatted = require('./formatting/url')(youtubeFormatted);
-            console.log(urlFormatted);
             payload.msg = urlFormatted.msg;
             // const isSoundCloud = new RegExp(/https:\/\/soundcloud.com\/(.*) /igm);
 

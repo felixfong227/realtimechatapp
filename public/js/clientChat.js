@@ -47,7 +47,11 @@ function renderList(payload){
                 this.close();
             }
         });
-        player.playVideo();
+        try{
+            player.playVideo();
+        }catch(error){
+            console.log(error)
+        }
         msgBox.innerHTML = payload.msg;
         msgBoxFrom.innerHTML = 'From: ' + payload.from;
     });
@@ -69,24 +73,30 @@ socket.on('user:update:username', function(payload){
 function startNewChat(id){
     inputBox.focus();
     msgTo = id;
+    var sending = false;
     // Update the DOM
     inputBox.placeholder = 'Message to (' + msgTo + ')';
     inputBox.addEventListener('keydown', function(e){
         if(e.keyCode === 13 /* ENTER */ ){
-            e.preventDefault();
-            if(e.shiftKey){
-                // Make a new line
-                this.value += '\n';
-                return false;
+            // See if the user already press ENTER
+            if(!sending){
+                sending = true;
+                e.preventDefault();
+                if(e.shiftKey){
+                    // Make a new line
+                    this.value += '\n';
+                    return false;
+                }
+                var text = this.value;
+                this.value = null;
+                // Send message to the server
+                socket.emit('chat:send', {
+                    to: msgTo,
+                    msg: text,
+                    from: yourID,
+                });
+                sending = false;
             }
-            var text = this.value;
-            this.value = null;
-            // Send message to the server
-            socket.emit('chat:send', {
-                to: msgTo,
-                msg: text,
-                from: yourID,
-            });
         }
     });
 }
