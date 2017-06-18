@@ -67,36 +67,34 @@ socket.on('user:leave', function(payload){
 
 socket.on('user:update:username', function(payload){
     renderList(payload);
-});
+}); 
 
 
 function startNewChat(id){
     inputBox.focus();
     msgTo = id;
-    var sending = false;
     // Update the DOM
     inputBox.placeholder = 'Message to (' + msgTo + ')';
-    inputBox.addEventListener('keydown', function(e){
+}
+
+inputBox.addEventListener('keydown', function(e){
+    if(msgTo !== 'No one'){
         if(e.keyCode === 13 /* ENTER */ ){
             // See if the user already press ENTER
-            if(!sending){
-                sending = true;
-                e.preventDefault();
-                if(e.shiftKey){
-                    // Make a new line
-                    this.value += '\n';
-                    return false;
-                }
-                var text = this.value;
-                this.value = null;
-                // Send message to the server
-                socket.emit('chat:send', {
-                    to: msgTo,
-                    msg: text,
-                    from: yourID,
-                });
-                sending = false;
+            e.preventDefault();
+            if(e.shiftKey){
+                // Make a new line
+                this.value += '\n';
+                return false;
             }
+            var text = this.value;
+            this.value = null;
+            // Send message to the server
+            socket.emit('chat:send', {
+                to: msgTo,
+                msg: text,
+                from: yourID,
+            });
         }
-    });
-}
+    }
+});
