@@ -88,13 +88,15 @@ inputBox.addEventListener('keydown', function(e){
                 return false;
             }
             var text = this.value;
-            this.value = null;
-            // Send message to the server
-            socket.emit('chat:send', {
-                to: msgTo,
-                msg: text,
-                from: yourID,
-            });
+            if(!text.length <= 0){
+                this.value = null;
+                // Send message to the server
+                socket.emit('chat:send', {
+                    to: msgTo,
+                    msg: text,
+                    from: yourID,
+                });
+            }
         }
     }else{
         inputBox.placeholder = 'You have to choose someone to chat first';

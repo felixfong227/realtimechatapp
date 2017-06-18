@@ -47,6 +47,10 @@ module.exports = io => {
         Someone send a message
         */
         socket.on('chat:send', payload => {
+            payload.msg = payload.msg.trim();
+            if(payload.msg.length <= 0){
+                return false;
+            }
             console.log(`${payload.from}: ${payload.msg} to ${payload.to}`);
 
             const rawInput = payload.msg;
