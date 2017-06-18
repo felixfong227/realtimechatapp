@@ -96,5 +96,8 @@ inputBox.addEventListener('keydown', function(e){
                 from: yourID,
             });
         }
+    }else{
+        inputBox.placeholder = 'You have to choose someone to chat first';
+        e.preventDefault();
     }
 });
