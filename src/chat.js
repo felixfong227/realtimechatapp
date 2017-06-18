@@ -2,13 +2,14 @@
 describe:
 A SocketIO backend
 */
-module.exports = io => {
-    const users = {}
-    const randomstring = require('randomstring');
-    const escapeHtml = require('escape-html');
-    const request = require('request');
-    const cookie = require('cookie');
-    const showdown  = require('showdown');
+const users = {};
+const randomstring = require('randomstring');
+const escapeHtml = require('escape-html');
+const request = require('request');
+const cookie = require('cookie');
+const showdown = require('showdown');
+
+module.exports = (io) => {
     /*
     describe:
     When someone is connected, like open the web app inside a browser
@@ -17,7 +18,7 @@ module.exports = io => {
         // Someone join
         const uid = randomstring.generate(30);
         users[uid] = {
-            id: socket.id
+            id: socket.id,
         };
         // Check if the user already contain an username
         const socketCookie = cookie.parse(socket.handshake.headers.cookie);
@@ -46,9 +47,9 @@ module.exports = io => {
         describe:
         Someone send a message
         */
-        socket.on('chat:send', payload => {
+        socket.on('chat:send', (payload) => {
             payload.msg = payload.msg.trim();
-            if(payload.msg.length <= 0){
+            if (payload.msg.length <= 0) {
                 return false;
             }
             console.log(`${payload.from}: ${payload.msg} to ${payload.to}`);
@@ -80,7 +81,7 @@ module.exports = io => {
             //         break;
             //     }
             // }
-            
+
             // Makrdown support
             const markdownConverter = new showdown.Converter();
             payload.msg = markdownConverter.makeHtml(payload.msg);
@@ -104,13 +105,12 @@ module.exports = io => {
             Send back the formated text
             */
 
-            io.to(users[payload.to].id).emit(`chat:get`, {
+            io.to(users[payload.to].id).emit('chat:get', {
                 msg: payload.msg,
                 from: payload.from,
                 rawText: rawInput,
             });
-
         });
-        
     });
 }
+;

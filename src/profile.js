@@ -3,6 +3,7 @@ describe:
 Handling profile things
 */
 const express = require('express');
+
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -13,7 +14,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     let username = req.body.username;
-    if(username){
+    if (username) {
         username = username.replace(/ /igm, '');
         // Save the username to cookie
         res.cookie('username', username);

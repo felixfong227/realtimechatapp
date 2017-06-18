@@ -5,12 +5,12 @@ Main entry to the backend
 const express = require('express');
 const app = express();
 const http = require('http');
+
 const server = http.createServer(app);
 const path = require('path');
 const io = require('socket.io').listen(server);
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const subdomain = require('express-subdomain');
 const cookieParser = require('cookie-parser');
 
 const port = process.env.PORT || 3000;

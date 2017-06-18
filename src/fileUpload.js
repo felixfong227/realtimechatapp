@@ -3,10 +3,11 @@ describe:
 Handling the file upload
 */
 const express = require('express');
+
 const router = express.Router();
 
 router.post('/', (req, res) => {
-    const fileUrl = req.protocol + '://' + req.get('host');
+    const fileUrl = `${req.protocol}://${req.get('host')}`;
     const formidable = require('formidable');
     const form = new formidable.IncomingForm();
     form.encoding = 'utf-8';
@@ -16,12 +17,12 @@ router.post('/', (req, res) => {
     Get the file info, like file name or file size
     */
     form.on('fileBegin', (name, file) => {
-        if(file.type.includes('image') && !file.type.includes('photoshop')){
+        if (file.type.includes('image') && !file.type.includes('photoshop')) {
             const path = require('path');
             const sha256 = require('sha256');
             const randomstring = require('randomstring');
             const fileExtension = path.extname(file.name);
-            const newFileID = sha256( randomstring.generate(50) );
+            const newFileID = sha256(randomstring.generate(50));
             const filePath = newFileID + fileExtension;
             /*
             describe:
@@ -39,7 +40,7 @@ router.post('/', (req, res) => {
                     url: `${fileUrl}/view/uploaded/content/${filePath}`,
                 },
             }, null, 2));
-        }else{
+        } else {
             res.end(JSON.stringify({
                 error: true,
                 msg: 'For now we only support image file',
