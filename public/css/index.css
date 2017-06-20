@@ -16,14 +16,31 @@ html{
     margin: 0 auto;
 }
 
+#chat{
+    display: inline-block;
+    background: rgba(38,38,38, 1);
+    position: fixed;
+    height: 100vh;
+    left: 0em;
+}
+
+.profile-link{
+    display: block;
+}
+
 .uid{
     display: block;
     background: skyblue;
     padding: 1em;
     cursor: pointer;
+    float: right;
 }
 
-#msgBox{
+#uids{
+    display: inline-grid;
+}
+
+/*#msgBox{
     background: rgba(38,38,38, 1);
     padding: 1em;
     color: #FFF;
@@ -33,15 +50,23 @@ html{
     position: fixed;
     bottom: 1em;
     left: 1em;
+}*/
+
+#inputBox{
+    color: #FFF;
+    position: relative;
 }
 
 #inputBox textarea{
-    width: 100vw;
-    height: auto;
     padding: 1em;
     outline: none;
     border: none;
     border-bottom: 1px solid black;
+    width: 90%;
+}
+
+#msgBox{
+    color: #FFF;
 }
 
 #msgBox .from{

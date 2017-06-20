@@ -9,24 +9,24 @@
   
   <div id="app">
     <h1>ᕕ( ᐛ )ᕗ Who is here ᕕ( ᐛ )ᕗ</h1>
-    <a href="/profile">Profile</a>
+    <a href="/profile" class="profile-link">Profile</a>
     <div id="uids"></div>
-  </div>
-
-  <div id="chat">
-    <div id="msgBox">
-      <div class="msg">No Message...</div>
-      <div class="from"></div>
-    </div>
-    <div id="inputBox">
-      <textarea type="text" name="msg" placeholder="Message..."></textarea>
-      <div id="fileUploadContainer">
-        <input type="file" name="file" id="fileUpload">
-        <progress id="fileProgress" value="0" max="100"></progress>
-        <div id="fileMsg"></div>
+      <div id="chat">
+      <div id="msgBox">
+        <div class="msg">No Message...</div>
+        <div class="from"></div>
+      </div>
+      <div id="inputBox">
+        <textarea type="text" name="msg" placeholder="Message..."></textarea>
+        <div id="fileUploadContainer">
+          <input type="file" name="file" id="fileUpload">
+          <progress id="fileProgress" value="0" max="100"></progress>
+          <div id="fileMsg"></div>
+        </div>
       </div>
     </div>
   </div>
+
 
   <div id="soundEffect"></div>
   <script>
