@@ -21,7 +21,10 @@ module.exports = (io) => {
             id: socket.id,
         };
         // Check if the user already contain an username
-        const socketCookie = cookie.parse(socket.handshake.headers.cookie);
+        let socketCookie = {};
+        if (socket.handshake.headers.cookie) {
+            socketCookie = cookie.parse(socket.handshake.headers.cookie);
+        }
         /*
         describe:
         Emit a user:new even to the client with uid, yourID, username

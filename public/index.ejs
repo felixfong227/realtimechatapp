@@ -29,6 +29,13 @@
   </div>
 
   <div id="soundEffect"></div>
+  <script>
+  // Users settings
+  var userSettings = {
+    notification: '<%=notification%>',
+    soundeffect: '<%=soundeffect%>',
+  }
+  </script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.13/push.js"></script>
@@ -36,5 +43,6 @@
   <script src="/static/js/soundeffect.js"></script>
   <script src="/static/js/clientChat.js"></script>
   <script src="/static/js/fileUpload.js"></script>
+
   </body>
 </html>

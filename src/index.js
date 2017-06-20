@@ -42,5 +42,8 @@ app.use('/view/uploaded/content', require('./viewUploaded'));
 app.use('/profile', require('./profile'));
 
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', {
+        notification: req.cookies.notification || true,
+        soundeffect: req.cookies.soundeffect || true,
+    });
 });

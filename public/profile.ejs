@@ -16,9 +16,39 @@
                 <input type="text" name="username" value="<%=username%>">
             </div>
             <div>
-                <input type="submit" value="Update">
+                <p>Notification</p>
+                <%if(notification == 'true'){%>
+                    <input type="checkbox" name="notification" checked="true">
+                <%}else{%>
+                    <input type="checkbox" name="notification">
+                <%}%>
             </div>
+            <div>
+                <p>Sound Effect</p>
+                <%if(soundeffect == 'true'){%>
+                    <input type="checkbox" name="soundeffect" checked="true">
+                <%}else{%>
+                    <input type="checkbox" name="soundeffect">
+                <%}%>
+            </div>
+            <input type="submit" value="Update">
         </form>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.13/push.js"></script>
+    <script>
+        // Init the push notification permission
+        document.querySelector('input[name=notification]').addEventListener('change', function(e){
+            if(document.querySelector('input[name=notification]').checked){
+                Push.create('Yay!', {
+                    body: 'Now you will get notify when ever you got a new message',
+                    timeout: 4000,
+                    onClick() {
+                        window.focus();
+                        this.close();
+                    },
+                });
+            }
+        });
+    </script>
 </body>
 </html>
