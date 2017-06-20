@@ -6,7 +6,7 @@ module.exports = (message) => {
         const youtubeLinks = message.match(isYouTubeLink);
         youtubeLinks.forEach((ytLink) => {
             const youtubeWathcID = ytLink.split('watch?v=')[1];
-            message = message.replace(ytLink, '');
+            message = message.replace(ytLink, `<a href="${ytLink}" target="_blank">${ytLink}</a>`);
             message += `<iframe class="in-app-tag youtube-embed" src="https://www.youtube-nocookie.com/embed/${youtubeWathcID}" frameborder="0" allowfullscreen></iframe>`;
         });
     }
