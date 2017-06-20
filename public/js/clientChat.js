@@ -34,8 +34,8 @@ function renderList(payload) {
         if (userSettings.soundeffect === 'true') {
             player.playVideo();
         }
-        msgBox.innerHTML = payload.msg;
-        msgBoxFrom.innerHTML = `From: ${payload.from}`;
+        msgBox.innerHTML += `${payload.from}: ${payload.msg}<br>`;
+        // msgBoxFrom.innerHTML = `From: ${payload.from}`;
     });
 }
 
@@ -70,6 +70,7 @@ inputBox.addEventListener('keydown', function (e) {
             }
             const text = this.value;
             if (!text.length <= 0) {
+                msgBox.innerHTML += `You: ${this.value}<br>`;
                 this.value = null;
                 // Send message to the server
                 socket.emit('chat:send', {
