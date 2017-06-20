@@ -25,14 +25,13 @@ module.exports = (io) => {
         if (socket.handshake.headers.cookie) {
             socketCookie = cookie.parse(socket.handshake.headers.cookie);
         }
+        users[uid].username = socketCookie.username || null;
         /*
         describe:
         Emit a user:new even to the client with uid, yourID, username
         */
         io.emit('user:new', {
             uid: users,
-            yourID: uid,
-            username: socketCookie.username || null,
         });
 
         /*

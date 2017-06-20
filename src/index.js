@@ -12,6 +12,7 @@ const io = require('socket.io').listen(server);
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const randomstring = require('randomstring');
 
 const port = process.env.PORT || 3000;
 
@@ -42,8 +43,12 @@ app.use('/view/uploaded/content', require('./viewUploaded'));
 app.use('/profile', require('./profile'));
 
 app.get('/', (req, res) => {
-    res.render('index', {
-        notification: req.cookies.notification || true,
-        soundeffect: req.cookies.soundeffect || true,
-    });
+    if (!req.cookies.username) {
+        res.redirect('/profile');
+    } else {
+        res.render('index', {
+            notification: req.cookies.notification || true,
+            soundeffect: req.cookies.soundeffect || true,
+        });
+    }
 });

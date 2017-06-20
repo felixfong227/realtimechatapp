@@ -4,35 +4,18 @@ const msgBox = document.querySelector('#msgBox .msg');
 const msgBoxFrom = document.querySelector('#msgBox .from');
 const inputBox = document.querySelector('#inputBox textarea');
 let msgTo = 'No one';
-let yourIDLock = false;
-let yourID;
+let username;
 const updateingDOM = false;
 
 inputBox.placeholder = `Message to (${msgTo})`;
 
 
 function renderList(payload) {
-    // Find the total height
-    if (!yourIDLock) {
-        yourID = payload.yourID;
-        yourIDLock = true;
-    }
     uids.innerHTML = null;
     // Check for username
     for (const key in payload.uid) {
-        if (payload.username) {
-            const username = payload.username;
-            // User have username
-            if (key == yourID) {
-                uids.innerHTML += `<div class="uid" onclick="startNewChat(this.id)" id="${key}">${username}(You)(${key})` + '</div>';
-            } else {
-                uids.innerHTML += `<div class="uid" onclick="startNewChat(this.id)" id="${key}">${username}(${key})` + '</div>';
-            }
-        } else if (key == yourID) {
-                uids.innerHTML += `<div class="uid" onclick="startNewChat(this.id)" id="${key}">${key}(You)</div>`;
-            } else {
-                uids.innerHTML += `<div class="uid" onclick="startNewChat(this.id)" id="${key}">${key}</div>`;
-            }
+        username = payload.uid[key].username;
+        uids.innerHTML += `<div class="uid" onclick="startNewChat(this.id)" id="${key}">${username}</div>`;
     }
     const totalHeight = uids.clientHeight;
     // On get message
@@ -92,7 +75,7 @@ inputBox.addEventListener('keydown', function (e) {
                 socket.emit('chat:send', {
                     to: msgTo,
                     msg: text,
-                    from: yourID,
+                    from: username,
                 });
             }
         }
