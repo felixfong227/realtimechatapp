@@ -29,28 +29,13 @@ html{
 }
 
 .uid{
-    display: block;
     background: skyblue;
     padding: 1em;
-    cursor: pointer;
-    float: right;
 }
 
 #uids{
-    display: inline-grid;
+    display: inline-block;
 }
-
-/*#msgBox{
-    background: rgba(38,38,38, 1);
-    padding: 1em;
-    color: #FFF;
-}
-
-#chat{
-    position: fixed;
-    bottom: 1em;
-    left: 1em;
-}*/
 
 #inputBox{
     color: #FFF;

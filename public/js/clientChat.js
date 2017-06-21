@@ -17,27 +17,27 @@ function renderList(payload) {
         username = payload.uid[key].username;
         uids.innerHTML += `<div class="uid" onclick="startNewChat(this.id)" id="${key}">${username}</div>`;
     }
-    const totalHeight = uids.clientHeight;
-    // On get message
-    socket.on('chat:get', (payload) => {
-        // Send push notification if user allow it
-        if (userSettings.notification === 'true') {
-            Push.create('New Message', {
-                body: payload.rawText,
-                timeout: 4000,
-                onClick() {
-                    window.focus();
-                    this.close();
-                },
-            });
-        }
-        if (userSettings.soundeffect === 'true') {
-            player.playVideo();
-        }
-        msgBox.innerHTML += `${payload.from}: ${payload.msg}<br>`;
-        // msgBoxFrom.innerHTML = `From: ${payload.from}`;
-    });
 }
+
+// On get message
+socket.on('chat:get', (payload) => {
+    // Send push notification if user allow it
+    if (userSettings.notification === 'true') {
+        Push.create('New Message', {
+            body: payload.rawText,
+            timeout: 4000,
+            onClick() {
+                window.focus();
+                this.close();
+            },
+        });
+    }
+    if (userSettings.soundeffect === 'true') {
+        player.playVideo();
+    }
+    msgBox.innerHTML += `${payload.from}: ${payload.msg}<br>`;
+    // msgBoxFrom.innerHTML = `From: ${payload.from}`;
+});
 
 socket.on('user:new', (payload) => {
     renderList(payload);
