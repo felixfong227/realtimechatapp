@@ -17,11 +17,12 @@ html{
 }
 
 #chat{
-    display: inline-block;
     background: rgba(38,38,38, 1);
     position: fixed;
     height: 100vh;
     left: 0em;
+    overflow-y: scroll;
+    width: 35%;
 }
 
 .profile-link{
@@ -39,7 +40,8 @@ html{
 
 #inputBox{
     color: #FFF;
-    position: relative;
+    position: fixed;
+    margin: 1em;
 }
 
 #inputBox textarea{
@@ -52,6 +54,7 @@ html{
 
 #msgBox{
     color: #FFF;
+    margin-top: 20%;
 }
 
 #msgBox .from{
