@@ -15,3 +15,9 @@ html{
     text-align: center;
     margin: 0 auto;
 }
+
+#isNew{
+    background: greenyellow;
+    padding: 1em;
+    font-size: 1.1em;
+}

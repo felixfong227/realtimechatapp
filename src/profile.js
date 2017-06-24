@@ -11,6 +11,7 @@ router.get('/', (req, res) => {
         username: req.cookies.username || '',
         notification: req.cookies.notification || true,
         soundeffect: req.cookies.soundeffect || true,
+        isNew: req.query.status === 'new' ? 'Please choose your username':null,
     });
 });
 

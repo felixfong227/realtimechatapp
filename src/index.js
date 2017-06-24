@@ -44,7 +44,7 @@ app.use('/profile', require('./profile'));
 
 app.get('/', (req, res) => {
     if (!req.cookies.username) {
-        res.redirect('/profile');
+        res.redirect('/profile?status=new');
     } else {
         res.render('index', {
             notification: req.cookies.notification || true,

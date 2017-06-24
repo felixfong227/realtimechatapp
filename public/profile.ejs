@@ -10,6 +10,11 @@
 <body>
     <div id="app">
         <h1>ᕕ( ᐛ )ᕗ Profile ᕕ( ᐛ )ᕗ</h1>
+        <%if(isNew !== null){%>
+            <div id="isNew">
+                <%=isNew%>
+            </div>
+        <%}%>
         <form method="post">
             <div>
                 <p>Username</p>
