@@ -3,6 +3,7 @@ describe:
 Main entry to the backend
 */
 const express = require('express');
+
 const app = express();
 const http = require('http');
 
@@ -13,9 +14,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const randomstring = require('randomstring');
+const cookieSession = require('cookie-session');
 
 const port = process.env.PORT || 3000;
 
+app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
 app.set('views', path.join(`${__dirname}/../public`));
 app.use('/static', express.static(path.join(`${__dirname}/../public`)));
@@ -23,6 +26,11 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: [randomstring.generate(50)],
+  maxAge: 365 * 24 * 60 * 60,
+}));
 
 server.listen(port, () => {
     console.log(`Serer is running on port ${port}`);

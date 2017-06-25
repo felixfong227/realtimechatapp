@@ -11,12 +11,19 @@ router.get('/', (req, res) => {
         username: req.cookies.username || '',
         notification: req.cookies.notification || true,
         soundeffect: req.cookies.soundeffect || true,
-        isNew: req.query.status === 'new' ? 'Please choose your username':null,
+        isNew: req.query.status === 'new' ? 'Please choose your username' : null,
+        message: req.session.message || null,
     });
 });
 
 router.post('/', (req, res) => {
-    let username = req.body.username;
+    let username = req.body.username.trim();
+    if (username.length <= 0) {
+        // req.session.profile.message = 'Invalid username: Username is too short';
+        req.session.message = 'Invalid username: Username is too short';
+        console.log(req.session);
+        res.redirect('/profile');
+    }
     const notification = typeof req.body.notification !== 'undefined' ? 'true' : 'false';
     const soundeffect = typeof req.body.soundeffect !== 'undefined' ? 'true' : 'false';
     if (username) {

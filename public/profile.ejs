@@ -15,6 +15,13 @@
                 <%=isNew%>
             </div>
         <%}%>
+
+        <%if(message !== null){%>
+            <div id="errorMessage">
+                <%=message%>
+            </div>
+        <%}%>
+
         <form method="post">
             <div>
                 <p>Username</p>

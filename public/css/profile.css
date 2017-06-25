@@ -21,3 +21,9 @@ html{
     padding: 1em;
     font-size: 1.1em;
 }
+
+#errorMessage{
+    background: #db3636;
+    padding: 1em;
+    font-size: 1.1em;
+}
